@@ -9,7 +9,7 @@
     },
 
     "experiments": {
-      "tsconfigPaths": true
+      "newArchEnabled": true
     },
 
     "plugins": [],
@@ -17,22 +17,24 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
 
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
 
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#20151a"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#20151a"
+      },
+      "newArchEnabled": true
     }
   }
 }
