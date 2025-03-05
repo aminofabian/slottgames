@@ -10,6 +10,7 @@ import Animated, {
   FadeInDown
 } from 'react-native-reanimated';
 import MoreDrawer from './MoreDrawer';
+import PurchaseModal from './PurchaseModal';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -69,6 +70,27 @@ function NavItem({ item, index, onPress }: {
 
 export default function BottomNav() {
   const [isMoreVisible, setIsMoreVisible] = useState(false);
+  const [isPurchaseVisible, setIsPurchaseVisible] = useState(false);
+
+  const handleNavItemPress = (item: typeof navItems[0]) => {
+    switch (item.label) {
+      case 'Purchase':
+        setIsPurchaseVisible(true);
+        break;
+      case 'More':
+        setIsMoreVisible(true);
+        break;
+      default:
+        // Handle other nav items
+        break;
+    }
+  };
+
+  const handlePaymentSelect = (method: string) => {
+    console.log('Selected payment method:', method);
+    // Handle payment method selection
+    setIsPurchaseVisible(false);
+  };
 
   return (
     <>
@@ -82,15 +104,22 @@ export default function BottomNav() {
               key={item.id} 
               item={item} 
               index={index}
-              onPress={item.icon === 'ellipsis-horizontal' ? 
-                () => setIsMoreVisible(true) : undefined}
+              onPress={() => handleNavItemPress(item)}
             />
           ))}
         </View>
       </Animated.View>
+
       <MoreDrawer 
         isVisible={isMoreVisible} 
         onClose={() => setIsMoreVisible(false)} 
+      />
+
+      <PurchaseModal
+        isVisible={isPurchaseVisible}
+        onClose={() => setIsPurchaseVisible(false)}
+        balance={0}
+        onSelectPayment={handlePaymentSelect}
       />
     </>
   );
