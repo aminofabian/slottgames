@@ -6,7 +6,6 @@ import Animated, {
   withSpring,
   useAnimatedStyle,
   withTiming,
-  runOnJS,
 } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -28,37 +27,29 @@ export default function BannerSlider() {
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const currentIndex = useSharedValue(0);
-
-  const scrollToNextImage = () => {
-    const nextIndex = (currentIndex.value + 1) % banners.length;
-    scrollViewRef.current?.scrollTo({
-      x: nextIndex * SCREEN_WIDTH,
-      animated: true,
-    });
-    currentIndex.value = nextIndex;
-  };
+  const isScrolling = useSharedValue(false);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
-      scrollX.value = event.contentOffset.x;
-      currentIndex.value = Math.round(event.contentOffset.x / SCREEN_WIDTH);
-    },
-    onMomentumEnd: () => {
-      runOnJS(startAutoPlay)();
+      if (!isScrolling.value) {
+        scrollX.value = event.contentOffset.x;
+        currentIndex.value = Math.round(event.contentOffset.x / SCREEN_WIDTH);
+      }
     },
   });
 
-  const startAutoPlay = () => {
-    timer.current = setTimeout(scrollToNextImage, 3000);
-  };
-
-  const timer = useRef<NodeJS.Timeout>();
-
   useEffect(() => {
-    startAutoPlay();
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    };
+    const timer = setInterval(() => {
+      if (!isScrolling.value) {
+        const nextIndex = (currentIndex.value + 1) % banners.length;
+        scrollViewRef.current?.scrollTo({
+          x: nextIndex * SCREEN_WIDTH,
+          animated: true,
+        });
+      }
+    }, 3000);
+
+    return () => clearInterval(timer);
   }, []);
 
   return (
@@ -72,7 +63,13 @@ export default function BannerSlider() {
         scrollEventThrottle={16}
         className="w-full"
         onScrollBeginDrag={() => {
-          if (timer.current) clearTimeout(timer.current);
+          isScrolling.value = true;
+        }}
+        onScrollEndDrag={() => {
+          isScrolling.value = false;
+        }}
+        onMomentumScrollEnd={() => {
+          isScrolling.value = false;
         }}
         decelerationRate="fast"
         snapToInterval={SCREEN_WIDTH}

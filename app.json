@@ -3,28 +3,24 @@
     "name": "my-expo-app",
     "slug": "my-expo-app",
     "version": "1.0.0",
-
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "experiments": {
       "newArchEnabled": true
     },
-
     "plugins": [],
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "dark",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#20151a"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "newArchEnabled": true
@@ -34,7 +30,23 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#20151a"
       },
+      "package": "com.myexpoapp.app",
       "newArchEnabled": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "aa470126-934e-49b9-9088-7f3e721ad4c3"
+      }
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/aa470126-934e-49b9-9088-7f3e721ad4c3"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "developer": {
+      "tool": "expo-cli"
     }
   }
 }
